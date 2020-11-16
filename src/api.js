@@ -1,5 +1,6 @@
 const { Octokit } = require('@octokit/core')
 const sodium = require('tweetsodium')
+const fs = require('fs')
 
 /**
  * @class Api
@@ -40,11 +41,11 @@ module.exports = class Api {
    * @param {string} key_id - Secret key id
    * @param {string} key - Secret key
    * @param {string} name - Secret name
-   * @param {string} value - Secret value
+   * @param {string} value - Secret value filename
    * @returns {{key_id: string, encrypted_value: string}} - Secret data
    */
   async createSecret(key_id, key, name, value) {
-    const messageBytes = Buffer.from(value)
+    const messageBytes = Buffer.from(fs.readFileSync(value, 'utf8'))
 
     const keyBytes = Buffer.from(key, 'base64')
 
